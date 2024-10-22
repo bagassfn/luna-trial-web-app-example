@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lunatrial/constants.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_android/webview_flutter_android.dart';
 
 class WebviewPage extends StatefulWidget {
   final String firstName;
@@ -49,17 +50,30 @@ class _WebviewPageState extends State<WebviewPage> {
   }
 
   WebViewController _webViewController() {
+    // final controller = WebView
+
     final controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..loadRequest(
-        Uri.parse(
-          getUrlWithParam(
-            firstName,
-            lastName,
-            email,
-            phone,
-          ),
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onProgress: (int progress) {
+            // Update loading bar.
+          },
+          onPageStarted: (String url) {},
+          onPageFinished: (String url) {},
+          onHttpError: (HttpResponseError error) {},
+          onWebResourceError: (WebResourceError error) {},
+          onNavigationRequest: (NavigationRequest request) {
+            if (request.url.startsWith(
+                getUrlWithParam(firstName, lastName, email, phone))) {
+              return NavigationDecision.prevent;
+            }
+            return NavigationDecision.navigate;
+          },
         ),
+      )
+      ..loadRequest(
+        Uri.parse(getUrlWithParam(firstName, lastName, email, phone)),
       );
 
     return controller;
@@ -73,7 +87,6 @@ class _WebviewPageState extends State<WebviewPage> {
   ) {
     String url =
         '$kHostUrl?user_first_name=$firstName&user_last_name=$lastName&user_email=$email&user_mobile_number=$phone';
-    print(url);
     return url;
   }
 }

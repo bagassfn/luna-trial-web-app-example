@@ -11,13 +11,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final TextEditingController _firstNameController =
-      TextEditingController(text: 'Jhon');
+      TextEditingController(text: '');
   final TextEditingController _lastNameController =
-      TextEditingController(text: 'Hell');
+      TextEditingController(text: '');
   final TextEditingController _emailController =
-      TextEditingController(text: 'jhonhell@yopmail.com');
+      TextEditingController(text: '');
   final TextEditingController _phoneController =
-      TextEditingController(text: '8991111222');
+      TextEditingController(text: '');
 
   @override
   Widget build(BuildContext context) {
